@@ -1,0 +1,36 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build React App'
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'build/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy Build Artifacts'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+  displayName: 'Publish Build Artifacts'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    azureSubscription: '<Your Azure Subscription>'
+    appType: 'webApp'
+    WebAppName: '<Your Web App Name>'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/drop'
+  displayName: 'Deploy to Azure Web App'
