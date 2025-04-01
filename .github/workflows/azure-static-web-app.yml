@@ -25,7 +25,9 @@ jobs:
       run: npm install react-scripts --save  # ติดตั้ง react-scripts
 
     - name: Build React app
-      run: npm run build  # สร้างโฟลเดอร์ build
+      run: |
+        ls public  # ตรวจสอบว่าโฟลเดอร์ public มีไฟล์ index.html
+        npm run build  # สร้างโฟลเดอร์ build
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
