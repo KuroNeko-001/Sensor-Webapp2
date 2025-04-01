@@ -42,11 +42,14 @@ jobs:
         du -sh build  # ตรวจสอบขนาดรวมของโฟลเดอร์ build
 
     - name: Clear Azure Web App Directory
+      env:
+        PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
       run: |
         echo "Clearing Azure Web App directory..."
-        curl -X POST -u ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} \
-        https://Sensor-Web-App1.scm.azurewebsites.net/api/command \
-        -d '{"command": "rm -rf /home/site/wwwroot/*"}'
+        curl -X POST -H "Content-Type: application/json" \
+        -d '{"command": "rm -rf /home/site/wwwroot/*"}' \
+        -u $(echo $PUBLISH_PROFILE | base64 -d | grep -oP '(?<=userName>).*?(?=</userName>)'):$(echo $PUBLISH_PROFILE | base64 -d | grep -oP '(?<=userPWD>).*?(?=</userPWD>)') \
+        https://Sensor-Web-App1.scm.azurewebsites.net/api/command
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
