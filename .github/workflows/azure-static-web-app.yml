@@ -29,6 +29,11 @@ jobs:
         ls public  # ตรวจสอบว่าโฟลเดอร์ public มีไฟล์ index.html
         npm run build  # สร้างโฟลเดอร์ build
 
+    - name: Debug Build Directory
+      run: |
+        echo "Contents of build directory:"
+        ls build
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
