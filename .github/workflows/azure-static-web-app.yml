@@ -35,6 +35,12 @@ jobs:
         echo "Contents of build directory:"
         ls build
 
+    - name: Debug Deployment Process
+      run: |
+        echo "Starting deployment process..."
+        ls -lh build  # ตรวจสอบขนาดไฟล์ในโฟลเดอร์ build
+        du -sh build  # ตรวจสอบขนาดรวมของโฟลเดอร์ build
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
