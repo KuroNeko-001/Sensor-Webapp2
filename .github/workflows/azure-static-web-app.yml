@@ -21,6 +21,9 @@ jobs:
     - name: Install dependencies
       run: npm install  # ติดตั้ง dependencies จาก package.json
 
+    - name: Install react-scripts (if missing)
+      run: npm install react-scripts --save  # ติดตั้ง react-scripts
+
     - name: Build React app
       run: npm run build  # สร้างโฟลเดอร์ build
 
