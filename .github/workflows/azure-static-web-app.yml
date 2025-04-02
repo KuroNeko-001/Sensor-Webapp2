@@ -22,9 +22,6 @@ jobs:
     - name: Install dependencies
       run: npm install  # ติดตั้ง dependencies จาก package.json
 
-    - name: Install react-scripts (if missing)
-      run: npm install react-scripts --save  # ติดตั้ง react-scripts
-
     - name: Build React app
       run: |
         echo "Building React app..."
@@ -43,12 +40,6 @@ jobs:
       run: |
         echo "Contents of build directory:"
         ls build
-
-    - name: Debug Deployment Process
-      run: |
-        echo "Starting deployment process..."
-        ls -lh build  # ตรวจสอบขนาดไฟล์ในโฟลเดอร์ build
-        du -sh build  # ตรวจสอบขนาดรวมของโฟลเดอร์ build
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
