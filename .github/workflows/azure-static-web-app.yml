@@ -27,7 +27,7 @@ jobs:
 
     - name: Build React app
       run: |
-        ls public  # ตรวจสอบว่าโฟลเดอร์ public มีไฟล์ index.html
+        echo "Building React app..."
         npm run build  # สร้างโฟลเดอร์ build
 
     - name: Verify Build Output
