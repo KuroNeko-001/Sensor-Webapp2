@@ -30,6 +30,15 @@ jobs:
         ls public  # ตรวจสอบว่าโฟลเดอร์ public มีไฟล์ index.html
         npm run build  # สร้างโฟลเดอร์ build
 
+    - name: Verify Build Output
+      run: |
+        echo "Verifying build output..."
+        if [ ! -f build/index.html ]; then
+          echo "Error: index.html not found in build directory!"
+          exit 1
+        fi
+        echo "Build output verified successfully."
+
     - name: Debug Build Directory
       run: |
         echo "Contents of build directory:"
@@ -40,16 +49,6 @@ jobs:
         echo "Starting deployment process..."
         ls -lh build  # ตรวจสอบขนาดไฟล์ในโฟลเดอร์ build
         du -sh build  # ตรวจสอบขนาดรวมของโฟลเดอร์ build
-
-    - name: Clear Azure Web App Directory
-      env:
-        PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-      run: |
-        echo "Clearing Azure Web App directory..."
-        curl -X POST -H "Content-Type: application/json" \
-        -d '{"command": "rm -rf /home/site/wwwroot/*"}' \
-        -u $(echo $PUBLISH_PROFILE | base64 -d | grep -oP '(?<=userName>).*?(?=</userName>)'):$(echo $PUBLISH_PROFILE | base64 -d | grep -oP '(?<=userPWD>).*?(?=</userPWD>)') \
-        https://Sensor-Web-App1.scm.azurewebsites.net/api/command
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
